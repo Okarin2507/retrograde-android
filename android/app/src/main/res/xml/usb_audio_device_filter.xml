@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Any USB Audio Class device (matched on the device or any interface class). Declaring it lets
+     Android offer "Always open Rustygrade when this device is connected", which remembers the
+     USB permission so the DAC no longer prompts on every plug-in. -->
+<resources>
+    <usb-device class="1" />
+</resources>

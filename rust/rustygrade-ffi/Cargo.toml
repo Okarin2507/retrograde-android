@@ -1,0 +1,20 @@
+[package]
+name = "rustygrade-ffi"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[lib]
+name = "rustygrade_ffi"
+crate-type = ["cdylib", "lib"]
+
+[dependencies]
+rustygrade-core = { path = "../rustygrade-core" }
+rustygrade-usb = { path = "../rustygrade-usb" }
+serde_json.workspace = true
+thiserror.workspace = true
+uniffi.workspace = true
+
+[dev-dependencies]
+rustygrade-core = { path = "../rustygrade-core", features = ["test-fixtures"] }

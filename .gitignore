@@ -1,0 +1,41 @@
+# Rust build & UniFFI generated bindings
+rust/target/
+android/app/src/main/jniLibs/
+android/app/src/main/java/uniffi/
+android/app/src/main/kotlin/uniffi/
+
+# Gradle & Android Studio
+android/.gradle/
+android/.kotlin/
+android/build/
+android/app/build/
+android/local.properties
+*.apk
+*.aab
+*.ap_
+*.dex
+*.keystore
+*.jks
+*.p12
+*.pfx
+*.pem
+key.properties
+
+# Release staging output
+release-dist/
+release-mapping/
+android/app/release/
+
+# Editors & OS
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+*.sw?
+*.log
+
+# Local agent notes
+CLAUDE.md
+
+# Device test screenshots
+screenshots/

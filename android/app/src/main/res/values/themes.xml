@@ -1,0 +1,5 @@
+<resources>
+    <style name="Theme.Rustygrade" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">#FF08080A</item>
+    </style>
+</resources>

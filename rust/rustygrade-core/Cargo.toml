@@ -1,0 +1,22 @@
+[package]
+name = "rustygrade-core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+fast_image_resize.workspace = true
+image.workspace = true
+indexmap.workspace = true
+lofty.workspace = true
+rayon.workspace = true
+regex.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+urlencoding.workspace = true
+
+[features]
+# Audio/cover fixtures and a serialised app-dir sandbox for tests (also used by rustygrade-ffi).
+test-fixtures = []

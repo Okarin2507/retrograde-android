@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- API 33+: read audio from shared storage. API 28-32: the legacy storage permission. -->
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <!-- API 28-29: editing tags writes the file directly (API 30+ asks per batch instead). -->
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="29" />
+    <!-- API 33+: album art and cover.jpg / folder.jpg files next to the music. -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <!-- API 33+: the media notification. Playback itself does not depend on it. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- Background playback: foreground service of type mediaPlayback, CPU awake with the screen off. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- Online lyrics (LRCLIB, NetEase, KuGou, Lyrics.ovh) and cover art (iTunes, Deezer, MusicBrainz/CAA). -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Direct USB audio driver (UAC1/UAC2 over USB Host). Optional so non-OTG devices can install. -->
+    <uses-feature android:name="android.hardware.usb.host" android:required="false" />
+
+    <application
+        android:name=".RustygradeApp"
+        android:allowBackup="false"
+        tools:ignore="DataExtractionRules,MissingIntentFilterForMediaSearch"
+        android:requestLegacyExternalStorage="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.Rustygrade">
+        <meta-data
+            android:name="com.google.android.gms.car.application"
+            android:resource="@xml/automotive_app_desc" />
+
+        <!-- Exported on purpose: Media3 controllers (system UI, Bluetooth, Android Auto) bind to it. -->
+        <!-- Album art for other apps' media UIs. Exported on purpose: it serves only the cover cache,
+             read-only (CoverProvider checks every path). -->
+        <provider
+            android:name=".media.CoverProvider"
+            android:authorities="${applicationId}.covers"
+            android:exported="true"
+            tools:ignore="ExportedContentProvider" />
+
+        <service
+            android:name=".media.RustygradeMediaService"
+            android:exported="true"
+            tools:ignore="ExportedService"
+            android:foregroundServiceType="mediaPlayback">
+            <intent-filter>
+                <action android:name="androidx.media3.session.MediaLibraryService" />
+                <action android:name="android.media.browse.MediaBrowserService" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Registered USB audio handler: lets Android remember the DAC permission ("Always open").
+             Invisible and outside the app's task, so plugging the DAC in never brings the UI up. -->
+        <activity
+            android:name=".media.UsbAttachActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.NoDisplay">
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                android:resource="@xml/usb_audio_device_filter" />
+        </activity>
+    </application>
+</manifest>
